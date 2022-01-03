@@ -6,9 +6,9 @@ const ItemCtrl = (function(){
 	}
 	const data = {
 		items: [
-			{id: 0, name: 'Steak', calories: 1200},
-			{id: 1, name: 'Cookie', calories: 400},
-			{id: 2, name: 'Eggs', calories: 300},
+			//{id: 0, name: 'Steak', calories: 1200},
+			//{id: 1, name: 'Cookie', calories: 400},
+			//{id: 2, name: 'Eggs', calories: 300},
 		],
 		total: 0
 	}
@@ -20,12 +20,9 @@ const ItemCtrl = (function(){
 			return	data.items
 		},
 		addItem: function(name, calories){
-			console.log(name)
-			console.log(calories)
 			let ID;
 			if(data.items.length > 0){
 				ID = data.items[data.items.length - 1].id + 1
-				console.log(ID)
 			} else {
 				ID = 0
 			}
@@ -39,7 +36,6 @@ const ItemCtrl = (function(){
 })();
 
 const UICtrl = (function (){
-	console.log('I am the UICtrl')
 	const UISelectors = {
 		itemList: '#item-list',
 		itemNameInput: '#item-name',
@@ -67,6 +63,20 @@ const UICtrl = (function (){
 				name: document.querySelector(UISelectors.itemNameInput).value,
 				calories: document.querySelector(UISelectors.itemCaloriesInput).value
 			}
+		},
+		addListItem: function(item){
+			const li = document.createElement('li');
+			li.className = 'collection-item';
+			li.id = `item-${item.id}`;
+			li.innerHTML = `<strong>${item.name}: </strong><em>${item.calories} Calories</em>
+				<a href="#" class="secondary-content">
+					<i class="edit-item fa fa-pencil"></i>
+				</a>`;
+			document.querySelector(UISelectors.itemList).insertAdjacentElement('beforeend', li)
+		},
+		clearinput: function(){
+			document.querySelector(UISelectors.itemNameInput).value = '';
+			document.querySelector(UISelectors.itemCaloriesInput).value = '';
 		}
 	}
 })();
@@ -75,19 +85,17 @@ const App = (function (ItemCtrl, UICtrl){
 	console.log(ItemCtrl.logData())
 
 	const loadEventListeners = function(){
-		console.log('Event listener')
 		const UISelectors = UICtrl.getSelectors()
 		console.log(UISelectors)
 		document.querySelector(UISelectors.addBtn).addEventListener('click', itemAddSubmit);
 	}
 
 	const itemAddSubmit = function(event){
-		console.log('Item add event functio')
 		const input = UICtrl.getItemInput()
 		if(input.name !== '' && input.calories !== ''){
-			console.log('That is a valid input')
-			console.log(input)
-			ItemCtrl.addItem(input.name, input.calories)
+			const newItem = ItemCtrl.addItem(input.name, input.calories)
+			UICtrl.addListItem(newItem)
+			UICtrl.clearinput();
 		}
 		event.preventDefault()
 	}
