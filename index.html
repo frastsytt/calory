@@ -1,0 +1,52 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Calory Project</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+   </head>
+   <body>
+      <div class="col s12 m7" style="text-align:center;">
+         <h2 class="header">Calorie Calculator</h2>
+         <div class="card horizontal">
+            <div class="card-image">
+               <img src="https://lorempixel.com/100/190/nature/6">
+            </div>
+            <div class="card-stacked">
+               <div class="card-content">
+                  <p>A simple tool to help you figure our your calorie business</p>
+               </div>
+               <div class="card-action">
+                  <a href="#">This is a link</a>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="container">
+         <div class="row">
+            <form class="col s12">
+               <div class="row">
+                  <div class="input-field col s6">
+                     <i class="material-icons prefix"></i>
+                     <input id="icon_prefix" type="text" class="validate">
+                     <label for="icon_prefix">Meal</label>
+                  </div>
+                  <div class="input-field col s6">
+                     <i class="material-icons prefix"></i>
+                     <input id="icon_telephone" type="tel" class="validate">
+                     <label for="icon_telephone">Calories</label>
+                  </div>
+               </div>
+            </form>
+            <a class="waves-effect waves-light btn">Add Meal</a>
+         </div>
+         <h3 class="center-align">Total Calories: <span class="total-calories">0</span></h3>
+      </div>
+   </body>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+   <script type="text/javascript" src="./app.js"></script>
+</html>
+
