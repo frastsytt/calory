@@ -1,3 +1,29 @@
+const StorageCtrl = (function(){
+	return {
+		storeItem: function(item){
+			let items;
+			if(localStorage.getItem('items') === null){
+				items = [];
+				items.push(item);
+				localStorage.setItem('items', JSON.stringify(items));
+			} else {
+				items = JSON.parse(localStorage.getItem('items'));
+				items.push(item);
+				localStorage.setItem('items', JSON.stringify(items));
+			}
+		},
+		getItemsFromStorage: function(){
+			let items;
+			if (localStorage.getItem('items') === null) {
+				items = [];
+			} else {
+				items = JSON.parse(localStorage.getItem('items'));
+			} 
+			return items;
+		}
+	}
+})();
+
 const ItemCtrl = (function(){
 	const Item = function(id, name, calories){
 		this.id = id
@@ -94,13 +120,14 @@ const UICtrl = (function (){
 	}
 	})();
 
-const App = (function (ItemCtrl, UICtrl){
+const App = (function (ItemCtrl, StorageCtrl, UICtrl){
 	console.log(ItemCtrl.logData())
 
 	const loadEventListeners = function(){
 		const UISelectors = UICtrl.getSelectors()
 		console.log(UISelectors)
 		document.querySelector(UISelectors.addBtn).addEventListener('click', itemAddSubmit);
+		document.addEventListener('DOMContentLoaded', getItemsFromStorage)
 	}
 
 	const itemAddSubmit = function(event){
@@ -110,9 +137,19 @@ const App = (function (ItemCtrl, UICtrl){
 			UICtrl.addListItem(newItem)
 			const totalCalories = ItemCtrl.getTotalCalories();
 			UICtrl.showTotalCalories(totalCalories);
+			StorageCtrl.storeItem(newItem);
 			UICtrl.clearinput();
 		}
 		event.preventDefault()
+	}
+	const getItemsFromStorage = function(){
+		const items = StorageCtrl.getItemsFromStorage()
+		items.forEach(function(item){
+			ItemCtrl.addItem(item['name'], item['calories'])
+		})
+		const totalCalories = ItemCtrl.getTotalCalories();
+		UICtrl.showTotalCalories(totalCalories)
+		UICtrl.populateItemList(items)
 	}
 
 	return {
@@ -123,6 +160,6 @@ const App = (function (ItemCtrl, UICtrl){
 			loadEventListeners()
 		}
 	}
-})(ItemCtrl, UICtrl);
+})(ItemCtrl, StorageCtrl, UICtrl);
 
 App.init()
